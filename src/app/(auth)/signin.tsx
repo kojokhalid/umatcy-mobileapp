@@ -11,13 +11,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter } from "expo-router";
-import InputField from "../components/InputField";
+import InputField from "../../components/InputField";
 import { images, icons } from "../../constants/index";
 import { StatusBar } from "expo-status-bar";
 import { useSignIn, useSSO } from "@clerk/clerk-expo";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
-import { useErrorAlert } from "../contexts/ErrorAlertContext";
+import { useCustomAlert } from "../../contexts/CustomAlertContext";
 import { animations } from "../../constants/index";
 import LottieView from "lottie-react-native";
 // Types
@@ -48,7 +48,7 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession();
 
 const SignIn = () => {
-  const { showError, dismissError } = useErrorAlert();
+  const { showAlert, dismissAlert } = useCustomAlert();
 
   useWarmUpBrowser();
   const { startSSOFlow } = useSSO();
@@ -94,7 +94,7 @@ const SignIn = () => {
           router.replace("/");
         } else {
           // Alert.alert("Authentication Error", "Additional steps required");
-          showError({
+          showAlert({
             title: "Authentication Error",
             message: "Please complete the authentication process.",
           });
@@ -104,7 +104,7 @@ const SignIn = () => {
         //   "Authentication Failed",
         //   err.errors?.[0]?.message || "An error occurred during authentication"
         // );
-        showError({
+        showAlert({
           title: "Authentication Failed",
           message: "An error occurred during authentication",
         });
@@ -132,7 +132,7 @@ const SignIn = () => {
         router.replace("/(screens)/announcements");
       } else {
         // Alert.alert("Authentication Error", "Please verify your credentials");
-        showError({
+        showAlert({
           title: "Authentication Error",
           message: "Please verify your credentials",
         });
@@ -142,7 +142,7 @@ const SignIn = () => {
       //   "Sign In Failed",
       //   err.errors?.[0]?.message || "Invalid email or password"
       // );
-      showError({
+      showAlert({
         title: "Sign In Failed",
         message: "Invalid email or password",
       });

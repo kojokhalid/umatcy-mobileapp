@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, TextInput, Image, TouchableOpacity, Text } from "react-native";
-
-const eyeIcon = require("../../assets/icons/eye.png");
-const eyeIconHide = require("../../assets/icons/eye-hide.png");
+import { icons } from "@/constants";
+const eyeIcon = icons.eye;
+const eyeIconHide = icons.eyehide;
 
 interface InputFieldProps {
   placeholder: string;
@@ -25,7 +25,7 @@ interface InputFieldProps {
   error?: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({
+const InputField = ({
   placeholder,
   additionalStyles = "",
   secureTextEntry = false,
@@ -37,7 +37,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onFocus,
   onSubmitEditing,
   error,
-}) => {
+}: InputFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (

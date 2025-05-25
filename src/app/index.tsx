@@ -12,8 +12,8 @@ export default function Page() {
       setloaded(true);
     }, 400);
     if (loaded) {
-      replace("/(auth)/additionalinfo");
-      // replace("/(auth)/signin");
+      // replace("/(screens)/announcement");
+      replace("/(auth)/signin");
     }
   }, [loaded]);
   return (

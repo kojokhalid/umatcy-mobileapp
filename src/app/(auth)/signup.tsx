@@ -10,11 +10,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter } from "expo-router";
 import { useSignUp } from "@clerk/clerk-expo";
-import InputField from "../components/InputField";
-import { useErrorAlert } from "../contexts/ErrorAlertContext";
+import InputField from "../../components/InputField";
+import { useCustomAlert } from "../../contexts/CustomAlertContext";
 
 const SignUp = () => {
-  const { showError, dismissError } = useErrorAlert();
+  const { showAlert, dismissAlert } = useCustomAlert();
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
   const [form, setForm] = useState({
@@ -62,7 +62,7 @@ const SignUp = () => {
       if (pendingVerification) router.push("/(auth)/otp");
     } catch (err) {
       // console.error(JSON.stringify(err, null, 2));
-      showError({ title: "Error", message: "Unknown error occurred" });
+      showAlert({ title: "Error", message: "Unknown error occurred" });
     }
   };
 

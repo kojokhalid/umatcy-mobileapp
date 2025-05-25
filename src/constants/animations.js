@@ -5,6 +5,8 @@ const otp = require("../assets/animations/otp.json");
 const otpsuccess = require("../assets/animations/otpsuccess.json");
 const error = require("../assets/animations/error.json");
 const loaderwhite = require("../assets/animations/loader-white.json");
+const classes = require("../assets/animations/class.json");
+const check = require("../assets/animations/check.json");
 export default {
   tracking,
   connect,
@@ -13,4 +15,6 @@ export default {
   otpsuccess,
   error,
   loaderwhite,
+  check,
+  classes,
 };

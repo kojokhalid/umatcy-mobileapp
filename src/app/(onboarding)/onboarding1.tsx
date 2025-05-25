@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
 import { animations } from "../../constants/index";
-import CustomButton from "../components/Button";
+import CustomButton from "../../components/Button";
 import { navigate } from "expo-router/build/global-state/routing";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
@@ -112,10 +112,10 @@ const OnboardingScreen = () => {
             <View className="absolute right-0">
               <CustomButton
                 title={
-                  step === onboardingData.length - 1 ? "Get Started" : "Next"
+                  step === onboardingData.length - 1 ? "Finish" : "Next"
                 }
                 onPress={handleNext}
-                additionalStyles="w-[100px]"
+                additionalStyles="w-[150px]"
               />
             </View>
           </View>

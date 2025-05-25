@@ -35,8 +35,19 @@ const ScreensLayout = () => {
         }}
       />
       <Tabs.Screen
+        name="notification"
+        options={{
+          headerShown: false,
+          tabBarBadge: 3,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="bell" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="search"
         options={{
+          href: null,
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome name="search" size={24} color={color} />

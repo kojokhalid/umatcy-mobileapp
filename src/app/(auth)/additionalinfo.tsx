@@ -9,19 +9,37 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import InputField from "../components/InputField";
-import Dropdown from "../components/Dropdown";
-import CustomButton from "../components/Button";
-
+import Dropdown from "../../components/Dropdown";
+import CustomButton from "../../components/Button";
+import LottieView from "lottie-react-native";
+import { animations } from "@/constants";
+import { useRouter } from "expo-router";
+import { useCustomAlert } from "../../contexts/CustomAlertContext";
 const AdditionalInfo = () => {
-  const [studentId, setStudentId] = useState("");
+  const { showAlert, dismissAlert } = useCustomAlert();
   const [selectedLevel, setSelectedLevel] = useState("");
   const levels = ["CY 100", "CY 200", "CY 300", "CY 400"];
-  const handleBack = () => {};
-  const handleSubmit = () => {
-    console.log("Student ID: ", studentId);
-    console.log("Selected Level: ", selectedLevel);
+  const navigate = useRouter();
+  const handleBack = () => {
+    navigate.back();
   };
+  const handleContinue = () => {
+    try {
+      if (!selectedLevel) {
+        throw new Error("Please select a class level.");
+      }
+      console.log("Selected Class Level:", selectedLevel);
+      navigate.replace("(onboarding)/onboarding1");
+    } catch (error) {
+      showAlert({
+        title: "Error",
+        message: error.message,
+        type: "error",
+        onDismiss: dismissAlert,
+      });
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -50,30 +68,22 @@ const AdditionalInfo = () => {
               {/* Title */}
               <View className="flex items-center justify-center">
                 <Text className="text-[24px] font-pbold text-primary">
-                  Additional Info
+                  Getting Started
                 </Text>
               </View>
+              <LottieView
+                source={animations.classes}
+                autoPlay
+                loop={false}
+                style={{ width: 300, height: 300 }}
+              />
 
-              {/* Description and Inputs */}
-              <View className="gap-y-6 mt-6">
+              {/* Description and Class Picker */}
+              <View className="gap-y-6">
                 <Text className="text-[15px] font-pregular text-gray">
-                  To get you started, please select your class level and enter
-                  your reference number. This helps us tailor your experience
-                  and ensure you are in the right place.
+                  Please select your class level. This helps us place you in the
+                  right environment.
                 </Text>
-
-                <View className="gap-y-2">
-                  <Text className="text-md font-pmedium text-gray-700">
-                    Student ID (Reference number)
-                  </Text>
-                  <InputField
-                    placeholder="Enter your Reference Number"
-                    value={studentId}
-                    onChangeText={setStudentId}
-                    error="Please enter a valid student ID"
-                    accessibilityLabel="Student ID"
-                  />
-                </View>
 
                 <View className="gap-y-2">
                   <Text className="text-md font-pmedium text-gray-700">
@@ -92,7 +102,7 @@ const AdditionalInfo = () => {
 
           {/* Fixed Button at Bottom */}
           <View className="px-10 pb-5">
-            <CustomButton title="Continue" onPress={handleSubmit} />
+            <CustomButton title="Continue" onPress={handleContinue} />
           </View>
         </View>
       </SafeAreaView>

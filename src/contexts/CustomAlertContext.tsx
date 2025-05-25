@@ -13,42 +13,44 @@ import {
   Animated,
   Easing,
 } from "react-native";
-import { icons, animations } from "../../constants/index";
 import LottieView from "lottie-react-native";
+import { animations } from "../constants/index"; // Ensure this includes success & error animations
+
 // Types
-interface ErrorAlert {
+type AlertType = "error" | "success";
+
+interface Alert {
   title: string;
   message: string;
+  type?: AlertType; // default to "error"
   onDismiss?: () => void;
 }
 
-interface ErrorAlertContextType {
-  showError: (alert: ErrorAlert) => void;
-  dismissError: () => void;
+interface AlertContextType {
+  showAlert: (alert: Alert) => void;
+  dismissAlert: () => void;
 }
 
-interface ErrorAlertProviderProps {
+interface CustomAlertProviderProps {
   children: React.ReactNode;
 }
 
 // Context
-const ErrorAlertContext = createContext<ErrorAlertContextType | undefined>(
-  undefined
-);
+const AlertContext = createContext<AlertContextType | undefined>(undefined);
 
-// Custom Hook
-export const useErrorAlert = () => {
-  const context = useContext(ErrorAlertContext);
+// Hook
+export const useCustomAlert = () => {
+  const context = useContext(AlertContext);
   if (!context) {
-    throw "useErrorAlert must be used within an ErrorAlertProvider";
+    throw new Error("useCustomAlert must be used within a CustomAlertProvider");
   }
   return context;
 };
 
-// Animated Error Alert Component
-const ErrorAlertModal: React.FC<{
+// Modal Component
+const CustomAlertModal: React.FC<{
   visible: boolean;
-  alert: ErrorAlert | null;
+  alert: Alert | null;
   onDismiss: () => void;
 }> = ({ visible, alert, onDismiss }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -88,6 +90,8 @@ const ErrorAlertModal: React.FC<{
 
   if (!alert) return null;
 
+  const isSuccess = alert.type === "success";
+
   return (
     <Modal
       transparent
@@ -105,15 +109,16 @@ const ErrorAlertModal: React.FC<{
         >
           <View className="p-4 min-h-[80px] justify-center items-center">
             <LottieView
-              source={animations.error}
+              source={isSuccess ? animations.check : animations.error}
               autoPlay
               loop={false}
               ref={animation}
               style={{ width: "80%", height: 200 }}
             />
-            <Text className="text-gray-800 text-base text-center">
-              {alert.message}
+            <Text className="text-gray-800 text-base text-center font-semibold mb-2">
+              {alert.title}
             </Text>
+            <Text className="text-gray-600 text-center">{alert.message}</Text>
           </View>
           <View className="justify-center items-center">
             <TouchableOpacity
@@ -123,7 +128,7 @@ const ErrorAlertModal: React.FC<{
                 onDismiss();
               }}
               accessible
-              accessibilityLabel="Dismiss error alert"
+              accessibilityLabel="Dismiss alert"
             >
               <Text className="text-white text-base font-semibold text-center">
                 OK
@@ -137,31 +142,32 @@ const ErrorAlertModal: React.FC<{
 };
 
 // Provider
-export const ErrorAlertProvider: React.FC<ErrorAlertProviderProps> = ({
+export const CustomAlertProvider: React.FC<CustomAlertProviderProps> = ({
   children,
 }) => {
-  const [alert, setAlert] = useState<ErrorAlert | null>(null);
+  const [alert, setAlert] = useState<Alert | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const showError = useCallback((newAlert: ErrorAlert) => {
-    setAlert(newAlert);
+  const showAlert = useCallback((newAlert: Alert) => {
+    setAlert({ ...newAlert, type: newAlert.type || "error" });
     setIsVisible(true);
   }, []);
 
-  const dismissError = useCallback(() => {
+  const dismissAlert = useCallback(() => {
     setIsVisible(false);
-    setTimeout(() => setAlert(null), 200); // Wait for animation to complete
+    setTimeout(() => setAlert(null), 200); // Wait for fade-out
   }, []);
 
   return (
-    <ErrorAlertContext.Provider value={{ showError, dismissError }}>
-      <ErrorAlertModal
+    <AlertContext.Provider value={{ showAlert, dismissAlert }}>
+      <CustomAlertModal
         visible={isVisible}
         alert={alert}
-        onDismiss={dismissError}
+        onDismiss={dismissAlert}
       />
       {children}
-    </ErrorAlertContext.Provider>
+    </AlertContext.Provider>
   );
 };
-export default ErrorAlertProvider;
+
+export default CustomAlertProvider;

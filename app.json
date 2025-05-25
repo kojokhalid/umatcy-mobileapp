@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "acme",
+    "scheme": "cyconnect",
     "userInterfaceStyle": "automatic",
     "orientation": "default",
     "web": {
@@ -12,7 +12,8 @@
         {
           "origin": "https://n"
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "name": "cyconnect",
     "slug": "cyconnect"

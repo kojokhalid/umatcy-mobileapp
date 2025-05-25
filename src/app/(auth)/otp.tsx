@@ -11,11 +11,11 @@ import {
 import React, { useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import CustomButton from "../components/Button";
+import CustomButton from "../../components/Button";
 import LottieView from "lottie-react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { animations } from "../../constants/index";
-import OTPInput from "../components/OTPinput";
+import OTPInput from "../../components/OTPinput";
 import { navigate } from "expo-router/build/global-state/routing";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
