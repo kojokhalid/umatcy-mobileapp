@@ -31,10 +31,11 @@ CyConnect is a mobile application designed to connect students of Cybersecurity 
 
 ## Technologies Used
 
-- React Native
+- React Native Expo
 - Node.js
 - Express
 - MongoDB
+- Better-auth
 
 ## Contributing
 
