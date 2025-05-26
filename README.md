@@ -1,17 +1,49 @@
-# Expo Router and Tailwind CSS
+# CyConnect
 
-Use [Expo Router](https://docs.expo.dev/router/introduction/) with [Nativewind](https://www.nativewind.dev/v4/overview/) styling.
+CyConnect is a mobile application designed to connect students of Cybersecurity Class in the University of Mines and Technology seamlessly and securely. This project aims to provide a robust platform for communication, collaboration, and networking.
 
-## 🚀 How to use
+## Features
 
-```sh
-npx create-expo-app -e with-tailwindcss
-```
+- User authentication and profile management
+- Real-time messaging
+- Notifications
+- Secure data handling
+- Intuitive user interface
 
-## Deploy
+## Installation
 
-Deploy on all platforms with Expo Application Services (EAS).
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/kojokhalid/cyconnect.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd cyconnect
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Run the app:
+   ```bash
+   npm start
+   ```
 
-- Deploy the website: `npx eas-cli deploy` — [Learn more](https://docs.expo.dev/eas/hosting/get-started/)
-- Deploy on iOS and Android using: `npx eas-cli build` — [Learn more](https://expo.dev/eas)
-# umatcy-mobileapp
+## Technologies Used
+
+- React Native
+- Node.js
+- Express
+- MongoDB
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Contact
+
+For questions or support, please contact [antohshadrack@gmail.com](mailto:antohshadrack@gmail.com).
