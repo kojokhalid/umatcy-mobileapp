@@ -11,8 +11,7 @@ import {
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
-import { useClerk } from "@clerk/clerk-expo";
+
 import * as Linking from "expo-linking";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
@@ -63,12 +62,8 @@ const data = [
 ];
 
 export const SignOutButton = () => {
-  const { signOut } = useClerk();
-
   const handleSignOut = async () => {
     try {
-      await signOut();
-      Linking.openURL(Linking.createURL("/"));
     } catch (err) {
       console.error(JSON.stringify(err, null, 2));
     }
@@ -90,7 +85,6 @@ const Announcement = () => {
   ];
   const [selected, setSelected] = useState("");
   const router = useRouter();
-  const { user } = useUser();
 
   const filteredData = selected
     ? data.filter((item) => item.category === selected)
@@ -128,7 +122,7 @@ const Announcement = () => {
                     <View style={styles.profileContainer}>
                       <View style={styles.profileImage}>
                         <Image
-                          source={{ uri: user?.imageUrl }}
+                          source={{ uri: "imageUrl" }}
                           style={styles.profileImageStyle}
                           resizeMode="cover"
                         />
@@ -181,16 +175,7 @@ const Announcement = () => {
               ListFooterComponent={<View style={{ height: 100 }} />}
             />
 
-            <View>
-              <SignedIn>
-                <SignOutButton />
-              </SignedIn>
-              <SignedOut>
-                <Link href="/(auth)/sign-in">
-                  <Text>Sign in</Text>
-                </Link>
-              </SignedOut>
-            </View>
+            <View></View>
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>

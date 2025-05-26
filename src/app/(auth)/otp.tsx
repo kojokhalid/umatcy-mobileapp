@@ -3,7 +3,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -13,52 +12,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import CustomButton from "../../components/Button";
 import LottieView from "lottie-react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { animations } from "../../constants/index";
 import OTPInput from "../../components/OTPinput";
 import { navigate } from "expo-router/build/global-state/routing";
-import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-
+import { authClient } from "@/lib/auth-client";
 const OTP = () => {
-  const { isLoaded, signUp, setActive } = useSignUp();
   const [code, setCode] = React.useState("");
   const router = useRouter();
   // Handle submission of verification form
   const onVerifyPress = async () => {
-    if (!isLoaded) return;
-
     try {
-      console.log("Code: ", code);
-      // Use the code the user provided to attempt verification
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code,
-      });
-
-      // If verification was completed, set the session to active
-      // and redirect the user
-      if (signUpAttempt.status === "complete") {
-        await setActive({ session: signUpAttempt.createdSessionId });
-        router.replace("/(onboarding)/onboarding1");
-      } else {
-        // If the status is not complete, check why. User may need to
-        // complete further steps.
-        Alert.alert(
-          "Verification failed",
-          "Please check the code and try again.",
-          [
-            {
-              text: "OK",
-              onPress: () => console.log("OK Pressed"),
-            },
-          ],
-          { cancelable: false }
-        );
-        // console.error(JSON.stringify(signUpAttempt, null, 2));
-      }
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
       Alert.alert(
         "Verification failed",
@@ -75,7 +40,16 @@ const OTP = () => {
   };
   const handleBack = () => {};
   const animation = useRef<LottieView>(null);
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    if (code.length < 6) {
+      Alert.alert("Invalid OTP", "Please enter a valid 6-digit OTP.");
+      return;
+    }
+    await authClient.emailOtp.verifyEmail({
+      email: "",
+      otp: code,
+    });
+
     navigate("/(auth)/additionalinfo");
   };
   const onOTPChange = (otp) => {

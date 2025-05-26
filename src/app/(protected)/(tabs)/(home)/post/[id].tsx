@@ -21,7 +21,6 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { Post } from "@/components/Post";
-import { useUser } from "@clerk/clerk-expo";
 
 // Sample data for the main post and comments
 type MediaType = "image" | "pdf" | "video" | "document" | "audio";
@@ -97,7 +96,6 @@ const comments: Array<{
 
 export default function FullPostScreen() {
   const { id } = useLocalSearchParams();
-  const { user } = useUser();
   const [commentText, setCommentText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -122,7 +120,7 @@ export default function FullPostScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 20}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 10}
       className="flex-1 bg-white"
     >
       <SafeAreaView className="flex-1">
@@ -189,10 +187,10 @@ export default function FullPostScreen() {
           </ScrollView>
 
           {/* Comment Input */}
-          <View className="px-5 pb-5 pt-3 bg-white border-t border-gray-100">
+          <View className="px-5 pb-20 bg-white border-t border-gray-100">
             <View className="flex-row items-center">
               <Image
-                source={{ uri: user?.imageUrl }}
+                source={{ uri: "imageUrl" }}
                 className="w-10 h-10 rounded-full mr-3"
               />
               <TextInput

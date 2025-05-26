@@ -2,8 +2,7 @@ import "../global.css";
 import { Stack } from "expo-router";
 import { SplashScreen } from "expo-router";
 import { useFonts } from "expo-font";
-import { ClerkProvider } from "@clerk/clerk-expo";
-import { tokenCache } from "@clerk/clerk-expo/token-cache";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { CustomAlertProvider } from "../contexts/CustomAlertContext";
 SplashScreen.preventAutoHideAsync();
 
@@ -23,20 +22,14 @@ export default function Layout() {
     SplashScreen.hideAsync();
   }
   return (
-    <ClerkProvider
-      tokenCache={tokenCache}
-      publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}
-    >
+    <AuthProvider>
       <CustomAlertProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="full-post/[id]"
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
         </Stack>
       </CustomAlertProvider>
-    </ClerkProvider>
+    </AuthProvider>
   );
 }

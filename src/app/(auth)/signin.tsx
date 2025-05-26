@@ -14,7 +14,7 @@ import { Stack, useRouter } from "expo-router";
 import InputField from "../../components/InputField";
 import { images, icons } from "../../constants/index";
 import { StatusBar } from "expo-status-bar";
-import { useSignIn, useSSO } from "@clerk/clerk-expo";
+
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import { useCustomAlert } from "../../contexts/CustomAlertContext";
@@ -51,9 +51,9 @@ const SignIn = () => {
   const { showAlert, dismissAlert } = useCustomAlert();
 
   useWarmUpBrowser();
-  const { startSSOFlow } = useSSO();
+
   const router = useRouter();
-  const { signIn, setActive, isLoaded } = useSignIn();
+
   const [form, setForm] = useState<FormState>({
     emailAddress: "",
     password: "",
@@ -81,24 +81,8 @@ const SignIn = () => {
   // Generic SSO handler
   const handleSSO = useCallback(
     async (strategy: "oauth_google" | "oauth_github" | "oauth_linkedin") => {
-      if (!isLoaded) return;
       setIsLoading(true);
       try {
-        const { createdSessionId, setActive } = await startSSOFlow({
-          strategy,
-          redirectUrl: REDIRECT_URI,
-        });
-
-        if (createdSessionId) {
-          await setActive!({ session: createdSessionId });
-          router.replace("/");
-        } else {
-          // Alert.alert("Authentication Error", "Additional steps required");
-          showAlert({
-            title: "Authentication Error",
-            message: "Please complete the authentication process.",
-          });
-        }
       } catch (err: any) {
         // Alert.alert(
         //   "Authentication Failed",
@@ -113,30 +97,20 @@ const SignIn = () => {
         setIsLoading(false);
       }
     },
-    [isLoaded, startSSOFlow, router]
+    [router]
   );
 
   // Email/Password sign-in
   const onSignInPress = async () => {
-    if (!isLoaded || !validateForm()) return;
-
     setIsLoading(true);
     try {
-      const signInAttempt = await signIn.create({
-        identifier: form.emailAddress,
-        password: form.password,
-      });
-
-      if (signInAttempt.status === "complete") {
-        await setActive({ session: signInAttempt.createdSessionId });
-        router.replace("/(screens)/announcements");
-      } else {
-        // Alert.alert("Authentication Error", "Please verify your credentials");
-        showAlert({
-          title: "Authentication Error",
-          message: "Please verify your credentials",
-        });
-      }
+      // } else {
+      //   // Alert.alert("Authentication Error", "Please verify your credentials");
+      //   showAlert({
+      //     title: "Authentication Error",
+      //     message: "Please verify your credentials",
+      //   });
+      // }
     } catch (err: any) {
       // Alert.alert(
       //   "Sign In Failed",

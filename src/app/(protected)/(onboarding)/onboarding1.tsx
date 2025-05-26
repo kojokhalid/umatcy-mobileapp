@@ -2,8 +2,8 @@ import { Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
-import { animations } from "../../constants/index";
-import CustomButton from "../../components/Button";
+import { animations } from "../../../constants/index";
+import CustomButton from "../../../components/Button";
 import { navigate } from "expo-router/build/global-state/routing";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
@@ -111,9 +111,7 @@ const OnboardingScreen = () => {
             {/* Next / Get Started button */}
             <View className="absolute right-0">
               <CustomButton
-                title={
-                  step === onboardingData.length - 1 ? "Finish" : "Next"
-                }
+                title={step === onboardingData.length - 1 ? "Finish" : "Next"}
                 onPress={handleNext}
                 additionalStyles="w-[150px]"
               />

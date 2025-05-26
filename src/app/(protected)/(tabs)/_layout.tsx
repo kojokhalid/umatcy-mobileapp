@@ -26,7 +26,7 @@ const ScreensLayout = () => {
       }}
     >
       <Tabs.Screen
-        name="announcement"
+        name="(home)"
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (
@@ -55,7 +55,7 @@ const ScreensLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="(settings)"
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (

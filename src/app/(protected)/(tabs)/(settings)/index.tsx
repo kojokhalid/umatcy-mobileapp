@@ -54,7 +54,7 @@ const Settings = () => {
     return (
       <TouchableOpacity
         onPress={() =>
-          router.push(hasSwitch ? "" : `/(screens)/settings/${url}`)
+          router.push(hasSwitch ? "" : `/(protected)/(tabs)/(settings)/${url}`)
         }
       >
         <View className="flex-row items-center justify-start mt-5 gap-x-4">
@@ -178,4 +178,3 @@ const Settings = () => {
 };
 
 export default Settings;
-

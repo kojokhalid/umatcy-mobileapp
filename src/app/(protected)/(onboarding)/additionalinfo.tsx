@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,12 +9,12 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import Dropdown from "../../components/Dropdown";
-import CustomButton from "../../components/Button";
+import Dropdown from "../../../components/Dropdown";
+import CustomButton from "../../../components/Button";
 import LottieView from "lottie-react-native";
 import { animations } from "@/constants";
 import { useRouter } from "expo-router";
-import { useCustomAlert } from "../../contexts/CustomAlertContext";
+import { useCustomAlert } from "../../../contexts/CustomAlertContext";
 const AdditionalInfo = () => {
   const { showAlert, dismissAlert } = useCustomAlert();
   const [selectedLevel, setSelectedLevel] = useState("");
@@ -39,7 +39,7 @@ const AdditionalInfo = () => {
       });
     }
   };
-
+  useEffect(() => {}, []);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}

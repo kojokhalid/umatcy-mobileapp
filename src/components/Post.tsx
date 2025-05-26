@@ -265,7 +265,9 @@ const Post = ({
   };
 
   return (
-    <Pressable onPress={() => router.push(`/full-post/${id}`)}>
+    <Pressable
+      onPress={() => router.push(`/(protected)/(tabs)/(home)/post/${id}`)}
+    >
       <View className="px-5 py-4 border-b border-gray-100 flex-row gap-x-3">
         {/* Avatar */}
         <View className="w-10 h-10 bg-black rounded-full">
