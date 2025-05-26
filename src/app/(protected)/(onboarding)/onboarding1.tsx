@@ -40,12 +40,12 @@ const OnboardingScreen = () => {
     if (step < onboardingData.length - 1) {
       setStep((prev) => prev + 1);
     } else {
-      navigate("/(screens)/announcement");
+      navigate("/(tabs)/(home)");
     }
   };
 
   const handleSkip = () => {
-    navigate("/(screens)/announcement");
+    navigate("/(tabs)/(home)");
   };
   const handleBack = () => {
     if (step > 0) {

@@ -14,7 +14,7 @@ import { Link } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-
+import { useAuth } from "@/contexts/AuthContext";
 interface MenuItemProps {
   icon: React.ReactNode;
   title: string;
@@ -23,9 +23,11 @@ interface MenuItemProps {
   hasSwitch?: boolean;
   onValueChange?: (value: boolean) => void;
   initialValue?: boolean;
+  onPress?: () => void;
 }
 
 const Settings = () => {
+  const { user, logOut } = useAuth();
   const router = useRouter();
 
   const handleBack = () => router.back();
@@ -38,6 +40,7 @@ const Settings = () => {
     hasSwitch = false,
     onValueChange,
     initialValue = false,
+    onPress,
   }: MenuItemProps) => {
     const [switchValue, setSwitchValue] = useState(initialValue);
 
@@ -52,11 +55,7 @@ const Settings = () => {
     };
 
     return (
-      <TouchableOpacity
-        onPress={() =>
-          router.push(hasSwitch ? "" : `/(protected)/(tabs)/(settings)/${url}`)
-        }
-      >
+      <TouchableOpacity onPress={onPress}>
         <View className="flex-row items-center justify-start mt-5 gap-x-4">
           <View className="bg-gray-100 rounded-full p-4 w-14 h-14 justify-center items-center">
             {icon}
@@ -140,6 +139,9 @@ const Settings = () => {
                 description={"Update your name, bio, and profile picture"}
                 icon={<Ionicons name="person" size={24} color={"#00CDDB"} />}
                 url={"profilesettings"}
+                onPress={() =>
+                  router.push(`/(protected)/(tabs)/(settings)/profilesettings`)
+                }
               />
               <MenuItem
                 title={"Change Password"}
@@ -147,7 +149,9 @@ const Settings = () => {
                 icon={
                   <Ionicons name="lock-closed" size={24} color={"#00CDDB"} />
                 }
-                url={"changepassword"}
+                onPress={() =>
+                  router.push(`/(protected)/(tabs)/(settings)/changepassword`)
+                }
               />
               <MenuTitle title={"Notifications"} />
               <MenuItem
@@ -168,6 +172,22 @@ const Settings = () => {
                 hasSwitch={true}
                 initialValue={false}
                 onValueChange={(value) => console.log("Darkmode:", value)}
+              />
+              <MenuItem
+                title="Sign Out"
+                description="Switch between light and dark themes"
+                icon={
+                  <Ionicons
+                    name="log-out-outline"
+                    size={24}
+                    color={"#00CDDB"}
+                  />
+                }
+                hasSwitch={false}
+                initialValue={false}
+                onPress={() => {
+                  logOut();
+                }}
               />
             </View>
           </ScrollView>

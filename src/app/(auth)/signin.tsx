@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -7,19 +7,16 @@ import {
   Platform,
   Image,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter } from "expo-router";
 import InputField from "../../components/InputField";
 import { images, icons } from "../../constants/index";
 import { StatusBar } from "expo-status-bar";
-
-import * as WebBrowser from "expo-web-browser";
-import * as AuthSession from "expo-auth-session";
 import { useCustomAlert } from "../../contexts/CustomAlertContext";
 import { animations } from "../../constants/index";
 import LottieView from "lottie-react-native";
+import { AuthContext } from "@/contexts/AuthContext";
 // Types
 interface FormState {
   emailAddress: string;
@@ -31,26 +28,9 @@ interface FormErrors {
   password?: string;
 }
 
-// Constants
-const REDIRECT_URI = AuthSession.makeRedirectUri({
-  scheme: "acme", // Configure in app.json
-});
-
-export const useWarmUpBrowser = () => {
-  useEffect(() => {
-    void WebBrowser.warmUpAsync();
-    return () => {
-      void WebBrowser.coolDownAsync();
-    };
-  }, []);
-};
-
-WebBrowser.maybeCompleteAuthSession();
-
 const SignIn = () => {
   const { showAlert, dismissAlert } = useCustomAlert();
-
-  useWarmUpBrowser();
+  const { setUser } = useContext(AuthContext);
 
   const router = useRouter();
 

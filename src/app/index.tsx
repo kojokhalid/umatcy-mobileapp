@@ -1,19 +1,30 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Image } from "react-native";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../constants/index";
-import { replace } from "expo-router/build/global-state/routing";
+import { AuthContext } from "@/contexts/AuthContext";
+import { useRouter } from "expo-router";
 export default function Page() {
   const [loaded, setloaded] = React.useState(false);
+  const router = useRouter();
+  const authState = useContext(AuthContext);
+
   useEffect(() => {
     setTimeout(() => {
       setloaded(true);
     }, 400);
     if (loaded) {
-      // replace("/(screens)/announcement");
-      replace("/(auth)/signin");
+      if (!authState.isReady) {
+        null; // or a loading spinner
+      }
+      // if (authState.isLoggedIn == true && authState.isEmailVerified == true) {
+      //   router.replace("/(tabs)/(home)");
+      // }
+      // if (authState.isLoggedIn == true && authState.isEmailVerified == false) {
+      //   router.replace("/(auth)/otp");
+      // }
     }
   }, [loaded]);
   return (

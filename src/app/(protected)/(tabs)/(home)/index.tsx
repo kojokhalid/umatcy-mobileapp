@@ -17,7 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { Post } from "@/components/Post";
 import CustomDropdown from "@/components/CustomDropdown";
-
+import { useAuth } from "@/contexts/AuthContext";
 const data = [
   {
     id: "1",
@@ -77,6 +77,8 @@ export const SignOutButton = () => {
 };
 
 const Announcement = () => {
+  const { user } = useAuth();
+
   const coursedata = [
     { key: "1", value: "All" },
     { key: "2", value: "Course" },
