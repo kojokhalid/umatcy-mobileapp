@@ -6,7 +6,6 @@ import {
   Modal,
   TouchableOpacity,
   Platform,
-  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { Link, router } from "expo-router";
@@ -139,27 +138,7 @@ const Post = ({
             </View>
           </View>
         );
-      // case "pdf":
-      //   return (
-      //     <View className="w-full h-72 rounded-xl bg-gray-100 items-center justify-center border border-gray-200">
-      //       <Pdf
-      //         source={{ uri: media }}
-      //         onLoadComplete={(numberOfPages) => setPdfPages(numberOfPages)}
-      //         style={{ width: "100%", height: "100%" }}
-      //         enablePaging={false}
-      //         enableRTL={false}
-      //         fitPolicy={0}
-      //         renderActivityIndicator={() => (
-      //           <View className="flex-1 items-center justify-center">
-      //             <ActivityIndicator size="large" color="#00CDDB" />
-      //           </View>
-      //         )}
-      //       />
-      //       <View className="absolute bottom-2 right-2 bg-black/50 rounded-full px-2 py-1">
-      //         <Text className="text-white text-xs">PDF ({pdfPages} pages)</Text>
-      //       </View>
-      //     </View>
-      //   );
+
       case "document":
         return (
           <View className="w-full h-72 rounded-xl bg-gray-100 items-center justify-center border border-gray-200">

@@ -1,5 +1,4 @@
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -14,7 +13,6 @@ import CustomButton from "../../components/Button";
 import LottieView from "lottie-react-native";
 import { animations } from "../../constants/index";
 import OTPInput from "../../components/OTPinput";
-import { navigate } from "expo-router/build/global-state/routing";
 import { useRouter } from "expo-router";
 import { authClient } from "@/lib/auth-client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -98,7 +96,7 @@ const OTP = () => {
               message: "Your email has been successfully verified.",
               onDismiss: dismissAlert,
             });
-            router.replace("(protected)/(onboarding)/additionalinfo");
+            router.replace("(protected)/(tabs)/(home)");
           },
         },
       });
@@ -185,7 +183,7 @@ const OTP = () => {
         </KeyboardAvoidingView>
       </SafeAreaView>
 
-      <StatusBar style="dark" backgroundColor="transparent" />
+      <StatusBar style="dark" />
     </>
   );
 };

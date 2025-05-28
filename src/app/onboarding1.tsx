@@ -121,7 +121,7 @@ const OnboardingScreen = () => {
           </View>
         </View>
       </SafeAreaView>
-      <StatusBar style="dark" backgroundColor="transparent" />
+      <StatusBar style="dark" />
     </>
   );
 };

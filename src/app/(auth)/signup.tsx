@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
@@ -88,6 +87,8 @@ const SignUp = () => {
     const [timer, setTimer] = React.useState(30);
     const [disableresend, setDisableResend] = React.useState(true);
     const [isResending, setIsResending] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(true);
+
     React.useEffect(() => {
       // Start a countdown timer for 30 seconds
       const countdown = setInterval(() => {
@@ -102,8 +103,17 @@ const SignUp = () => {
       }, 1000);
       return () => clearInterval(countdown);
     }, [timer]);
+    React.useEffect(() => {
+      if (code.length === 6) {
+        // Automatically trigger verification when code is complete
+        onVerifyPress();
+        setDisabled(false);
+      }
+    }, [code]);
     // Handle submission of verification form
     const onVerifyPress = async () => {
+      setloading(true);
+
       if (code.length < 6) {
         showAlert({
           title: "Warning",
@@ -123,7 +133,7 @@ const SignUp = () => {
                 message: "Your email has been successfully verified.",
                 onDismiss: dismissAlert,
               });
-              router.replace("/(onboarding)/additionalinfo");
+              router.replace("/(protected)/(home)");
             },
           },
         });
@@ -215,7 +225,8 @@ const SignUp = () => {
           title={"Verify"}
           onPress={onVerifyPress}
           additionalStyles="w-full"
-          loading={isResending || isloading}
+          loading={isloading}
+          disabled={disabled}
         />
       </View>
     );

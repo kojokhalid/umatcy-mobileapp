@@ -1,6 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { navigate } from "expo-router/build/global-state/routing";
 import LottieView from "lottie-react-native";
 import { animations } from "@/constants";
 

@@ -11,8 +11,6 @@ import {
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import * as Linking from "expo-linking";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { Post } from "@/components/Post";
@@ -112,7 +110,7 @@ const Announcement = () => {
         >
           <View style={styles.content}>
             <View>
-              <StatusBar backgroundColor="transparent" translucent />
+              <StatusBar translucent />
               <LinearGradient
                 colors={["#00CDDB", "#0096c7"]}
                 start={{ x: 0, y: 0 }}

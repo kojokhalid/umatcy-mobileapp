@@ -26,7 +26,7 @@ const CustomHeader = ({
 }: CustomHeaderProps) => {
   return (
     <View>
-      <StatusBar backgroundColor="transparent" translucent />
+      <StatusBar translucent />
       <LinearGradient
         colors={["#00CDDB", "#0096c7"]}
         start={{ x: 0, y: 0 }}

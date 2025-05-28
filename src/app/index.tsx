@@ -5,10 +5,8 @@ import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../constants/index";
 import { AuthContext } from "@/contexts/AuthContext";
-import { useRouter } from "expo-router";
 export default function Page() {
   const [loaded, setloaded] = React.useState(false);
-  const router = useRouter();
   const authState = useContext(AuthContext);
 
   useEffect(() => {
@@ -19,12 +17,6 @@ export default function Page() {
       if (!authState.isReady) {
         null; // or a loading spinner
       }
-      // if (authState.isLoggedIn == true && authState.isEmailVerified == true) {
-      //   router.replace("/(tabs)/(home)");
-      // }
-      // if (authState.isLoggedIn == true && authState.isEmailVerified == false) {
-      //   router.replace("/(auth)/otp");
-      // }
     }
   }, [loaded]);
   return (
@@ -43,7 +35,7 @@ export default function Page() {
           </Text>
         </View>
       </SafeAreaView>
-      <StatusBar style="auto" backgroundColor="transparent" />
+      <StatusBar style="auto" />
     </>
   );
 }

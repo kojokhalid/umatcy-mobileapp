@@ -2,28 +2,15 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
-  Image,
   KeyboardAvoidingView,
-  ScrollView,
   Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
-import { useClerk } from "@clerk/clerk-expo";
-import * as Linking from "expo-linking";
 import { LinearGradient } from "expo-linear-gradient";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { AntDesign } from "@expo/vector-icons";
-import { SelectList } from "react-native-dropdown-select-list";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { StatusBar } from "expo-status-bar";
-import { Modal, Pressable } from "react-native";
-import CustomDropdown from "@/components/CustomDropdown";
 import CustomHeader from "@/components/CustomHeader";
 import { Post } from "@/components/Post";
 const data = [
@@ -77,28 +64,6 @@ const data = [
   },
   // more posts...
 ];
-
-export const SignOutButton = () => {
-  // Use `useClerk()` to access the `signOut()` function
-  const { signOut } = useClerk();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      // Redirect to your desired page
-      Linking.openURL(Linking.createURL("/"));
-    } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-    }
-  };
-  return (
-    <TouchableOpacity onPress={handleSignOut}>
-      <Text>Sign out</Text>
-    </TouchableOpacity>
-  );
-};
 
 const Notification = () => {
   const coursedata = [
