@@ -137,7 +137,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
           setIsLoggedIn(false);
           setIsEmailVerified(false);
           await AsyncStorage.removeItem(authKey);
-          router.replace("/(auth)/signin");
+          if (data === null) router.replace("onboarding1");
         }
       } catch (error) {
         console.error("Error initializing auth:", error);

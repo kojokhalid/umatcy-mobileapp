@@ -2,11 +2,11 @@ import { Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
-import { animations } from "../../../constants/index";
-import CustomButton from "../../../components/Button";
-import { navigate } from "expo-router/build/global-state/routing";
+import { animations } from "../constants/index";
+import CustomButton from "../components/Button";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import { useRouter } from "expo-router";
 const onboardingData = [
   {
     title: "Track your progress",
@@ -31,7 +31,7 @@ const onboardingData = [
 const OnboardingScreen = () => {
   const animation = useRef<LottieView>(null);
   const [step, setStep] = useState(0);
-
+  const router = useRouter();
   useEffect(() => {
     animation.current?.play();
   }, [step]);
@@ -40,12 +40,12 @@ const OnboardingScreen = () => {
     if (step < onboardingData.length - 1) {
       setStep((prev) => prev + 1);
     } else {
-      navigate("/(tabs)/(home)");
+      router.replace("/(auth)/signin");
     }
   };
 
   const handleSkip = () => {
-    navigate("/(tabs)/(home)");
+    router.replace("/(auth)/signin");
   };
   const handleBack = () => {
     if (step > 0) {
@@ -111,7 +111,9 @@ const OnboardingScreen = () => {
             {/* Next / Get Started button */}
             <View className="absolute right-0">
               <CustomButton
-                title={step === onboardingData.length - 1 ? "Finish" : "Next"}
+                title={
+                  step === onboardingData.length - 1 ? "Get Started" : "Next"
+                }
                 onPress={handleNext}
                 additionalStyles="w-[150px]"
               />

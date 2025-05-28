@@ -26,7 +26,7 @@ const OTP = () => {
   const [timer, setTimer] = React.useState(30);
   const [disableresend, setDisableResend] = React.useState(true);
   const [isloading, setloading] = React.useState(false);
-  const [disabled, setDisabled] = React.useState(false);
+  const [disabled, setDisabled] = React.useState(true);
   const [isResending, setIsResending] = React.useState(false);
 
   const router = useRouter();
@@ -48,14 +48,41 @@ const OTP = () => {
     if (code.length === 6) {
       // Automatically trigger verification when code is complete
       onVerifyPress();
+      setDisabled(false);
     }
-    // if (code.length < 6) {
-    //   setloading(true);
-    // }
   }, [code]);
   // Handle submission of verification form
+  const handleResendOTP = () => {
+    try {
+      setIsResending(true);
+      setDisableResend(true);
+      setTimer(60);
+      authClient.emailOtp.sendVerificationOtp({
+        type: "email-verification",
+        email: user.email,
+        fetchOptions: {
+          onSuccess: () => {
+            showAlert({
+              type: "success",
+              title: "OTP Resent",
+              message: `An OTP has been resent to ${user.email}. Please enter it to verify your email.`,
+              onDismiss: dismissAlert,
+            });
+          },
+        },
+      });
+    } catch (error) {
+      showAlert({
+        type: "error",
+        title: "Resend Failed",
+        message: "Failed to resend OTP. Please try again later.",
+      });
+    }
+  };
+
   const onVerifyPress = async () => {
     setloading(true);
+
     try {
       const { data, error } = await authClient.emailOtp.verifyEmail({
         email: user.email,
@@ -88,24 +115,11 @@ const OTP = () => {
       setloading(false);
     }
   };
-  const handleBack = () => {};
+  const handleBack = () => {
+    router.back();
+  };
   const animation = useRef<LottieView>(null);
-  const handleConfirm = async () => {
-    if (code.length < 6) {
-      Alert.alert("Invalid OTP", "Please enter a valid 6-digit OTP.");
-      return;
-    }
-    await authClient.emailOtp.verifyEmail({
-      email: "",
-      otp: code,
-    });
 
-    navigate("/(auth)/additionalinfo");
-  };
-  const onOTPChange = (otp) => {
-    setCode(otp);
-  };
-  const handleResendOTP = () => {};
   return (
     <>
       <SafeAreaView className="h-screen w-full bg-white">
@@ -119,6 +133,7 @@ const OTP = () => {
               <View className="justify-center items-center">
                 <LottieView
                   autoPlay
+                  loop={false}
                   ref={animation}
                   style={{ width: "80%", height: 300 }}
                   source={animations.otpsuccess}
@@ -132,7 +147,11 @@ const OTP = () => {
                 Enter the OTP sent to your email address
               </Text>
               <View className="mb-4">
-                <OTPInput onOTPChange={onOTPChange} />
+                <OTPInput
+                  onOTPChange={(otp) => {
+                    setCode(otp);
+                  }}
+                />
               </View>
               <View className="flex-col items-center justify-center mt-5">
                 <Text>{timer}</Text>
@@ -158,7 +177,7 @@ const OTP = () => {
                 title={"Verify"}
                 onPress={onVerifyPress}
                 additionalStyles="w-full"
-                loading={isResending || isloading}
+                loading={isloading}
                 disabled={disabled}
               />
             </View>
