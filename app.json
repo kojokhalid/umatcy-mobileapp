@@ -16,6 +16,13 @@
       "expo-web-browser"
     ],
     "name": "cyconnect",
-    "slug": "cyconnect"
+    "slug": "cyconnect",
+    "android": {
+      "package": "com.anonymous.cyconnect",
+      "edgeToEdgeEnabled": true
+    },
+    "ios": {
+      "bundleIdentifier": "com.anonymous.cyconnect"
+    }
   }
 }

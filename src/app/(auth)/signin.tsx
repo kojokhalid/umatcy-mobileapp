@@ -17,6 +17,7 @@ import { useCustomAlert } from "../../contexts/CustomAlertContext";
 import { animations } from "../../constants/index";
 import LottieView from "lottie-react-native";
 import { AuthContext } from "@/contexts/AuthContext";
+import { authClient } from "@/lib/auth-client";
 // Types
 interface FormState {
   emailAddress: string;
@@ -30,7 +31,8 @@ interface FormErrors {
 
 const SignIn = () => {
   const { showAlert, dismissAlert } = useCustomAlert();
-  const { setUser } = useContext(AuthContext);
+  const { setUser, setIsEmailVerified, setIsLoggedIn } =
+    useContext(AuthContext);
 
   const router = useRouter();
 
@@ -84,21 +86,49 @@ const SignIn = () => {
   const onSignInPress = async () => {
     setIsLoading(true);
     try {
-      // } else {
-      //   // Alert.alert("Authentication Error", "Please verify your credentials");
-      //   showAlert({
-      //     title: "Authentication Error",
-      //     message: "Please verify your credentials",
-      //   });
-      // }
-    } catch (err: any) {
-      // Alert.alert(
-      //   "Sign In Failed",
-      //   err.errors?.[0]?.message || "Invalid email or password"
-      // );
+      const { data, error } = await authClient.signIn.email({
+        email: form.emailAddress,
+        password: form.password,
+      });
+      console.log("Sign in successful");
+      console.log(data);
+      if (data?.user) {
+        if (data.user.emailVerified) {
+          setIsLoggedIn(true);
+          setIsEmailVerified(data.user.emailVerified);
+          setUser(data.user);
+        } else {
+          setIsLoggedIn(false);
+          const { data, error } = await authClient.emailOtp.sendVerificationOtp(
+            {
+              email: form.emailAddress,
+              type: "email-verification",
+              fetchOptions: {
+                onSuccess: () => {
+                  showAlert({
+                    type: "success",
+                    title: "OTP Resent",
+                    message: `An OTP has been resent to ${form.emailAddress}. Please enter it to verify your email.`,
+                    onDismiss: dismissAlert,
+                  });
+                  router.replace("/(auth)/otp");
+                },
+              },
+            }
+          );
+          if (error) {
+            console.error("Error sending verification OTP:", error);
+            showAlert({
+              title: "Verification Error",
+              message: "Failed to send verification email. Please try again.",
+            });
+          }
+        }
+      }
+    } catch (error) {
       showAlert({
         title: "Sign In Failed",
-        message: "Invalid email or password",
+        message: error.message,
       });
       // console.error(JSON.stringify(err, null, 2));
     } finally {

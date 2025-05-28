@@ -27,13 +27,14 @@ type AuthContextType = {
   isReady: boolean;
   user?: UserType | undefined;
   setUser: (user: UserType | undefined) => void;
+  setIsLoggedIn: (isLoggedIn: boolean | null) => void;
+  setIsEmailVerified: (isEmailVerified: boolean | null) => void;
 };
 
 // Initialize context as undefined to enforce provider usage
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
-
 
 // Custom hook to enforce context usage within provider
 export const useAuth = () => {
@@ -108,7 +109,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
         // Validate with authClient
         const { data } = await authClient.getSession();
-        console.log("Session data:", data.user);
+        console.log("Session data:", data);
         if (data?.user) {
           const verified = data.user.emailVerified ?? false;
           setIsLoggedIn(true);
@@ -119,7 +120,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
           if (verified) {
             router.replace("/(protected)/(home)");
           } else {
-            router.replace("/(protectd)/(signup)");
+            router.replace("/(auth)/otp");
           }
         } else {
           setIsLoggedIn(false);
@@ -151,6 +152,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
         isReady,
         user,
         setUser,
+        setIsLoggedIn,
+        setIsEmailVerified,
       }}
     >
       {children}
