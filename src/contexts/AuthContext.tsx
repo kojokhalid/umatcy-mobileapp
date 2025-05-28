@@ -112,9 +112,20 @@ export function AuthProvider({ children }: PropsWithChildren) {
         console.log("Session data:", data);
         if (data?.user) {
           const verified = data.user.emailVerified ?? false;
-          setIsLoggedIn(true);
+          console.log("User email verified:", verified);
+          if (verified) {
+            setIsLoggedIn(true);
+            await storeAuthState({
+              isLoggedIn: true,
+              isEmailVerified: verified,
+            });
+          } else {
+            await storeAuthState({
+              isLoggedIn: false,
+              isEmailVerified: verified,
+            });
+          }
           setIsEmailVerified(verified);
-          await storeAuthState({ isLoggedIn: true, isEmailVerified: verified });
           setUser(data.user);
           // Redirect based on verification status
           if (verified) {
@@ -136,6 +147,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         router.replace("/(auth)/signin");
       } finally {
         setIsReady(true);
+        console.log("authstatexxx", getStoredAuthState);
       }
     };
 

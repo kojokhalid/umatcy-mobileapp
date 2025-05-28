@@ -26,6 +26,7 @@ const OTP = () => {
   const [timer, setTimer] = React.useState(30);
   const [disableresend, setDisableResend] = React.useState(true);
   const [isloading, setloading] = React.useState(false);
+  const [disabled, setDisabled] = React.useState(false);
   const [isResending, setIsResending] = React.useState(false);
 
   const router = useRouter();
@@ -158,7 +159,7 @@ const OTP = () => {
                 onPress={onVerifyPress}
                 additionalStyles="w-full"
                 loading={isResending || isloading}
-                disabled={isResending || isloading}
+                disabled={disabled}
               />
             </View>
           </ScrollView>
